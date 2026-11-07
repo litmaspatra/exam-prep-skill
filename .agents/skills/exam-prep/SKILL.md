@@ -29,6 +29,23 @@ flowchart TD
 
 ---
 
+## Step 0: Fetch Official Material First (Deterministic)
+
+Before searching the web, download the official free material with the bundled fetcher:
+
+```bash
+# Everything (PYQs + study material), into materials/ (gitignored)
+python scripts/fetch_materials.py
+
+# Or selectively:
+python scripts/fetch_materials.py --pyqs    # official PYQ PDFs (webservices.ignou.ac.in)
+python scripts/fetch_materials.py --slm     # study material PDFs (egyankosh.ac.in)
+```
+
+Both sources are official IGNOU and free - no login, no card. Safe to re-run: existing files are skipped and failures are listed for retry. Mine the downloaded PYQs to refine syllabus weights and to grow the MCQ bank (`data/clis_mcq_bank.json`). Use web search (Step 2) only for institutions the fetcher does not cover or to fill gaps.
+
+---
+
 ## Step 1: Intake & Constraints Gathering
 
 When the user requests exam preparation, confirm or extract these core parameters:
@@ -48,7 +65,7 @@ When the user requests exam preparation, confirm or extract these core parameter
 
 ## Step 2: PYQ & Exam Intelligence Gathering
 
-Use the `search_web` tool to mine patterns from past year question papers (PYQs) and university marking schemes.
+If Step 0 already downloaded official PYQs, mine those PDFs directly. Otherwise use the `search_web` tool to find past year question papers (PYQs) and university marking schemes.
 
 ### Targeted Search Patterns:
 Refer to [pyq-search-strategies.md](./references/pyq-search-strategies.md) for full query formulas.
@@ -72,8 +89,14 @@ Refer to [pyq-search-strategies.md](./references/pyq-search-strategies.md) for f
 Execute the curriculum triage logic (or invoke `scripts/exam_planner.py`):
 
 ```bash
+# Single exam, flat syllabus:
 python scripts/exam_planner.py --exam-date <YYYY-MM-DD> --daily-hours <HOURS>
+
+# Multiple exams (one course per exam date) - e.g. IGNOU CLIS Dec 2026:
+python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
 ```
+
+Multi-exam mode plans each course against its own exam date, splits the shared study pool across courses, and prints a day-by-day calendar (earliest exam scheduled first, exam days kept free). Units in the syllabus JSON may carry `"tier_hint": 1|2|3` to pin a known high-yield unit into a tier.
 
 Refer to [curriculum-triage.md](./references/curriculum-triage.md) for the mathematical allocation rules.
 
@@ -134,6 +157,14 @@ Follow the detailed teaching guides in [pedagogy-guides.md](./references/pedagog
 ## Step 5: Active Recall, Cheat Sheets & Exam Simulation
 
 Reinforce learning with high-impact revision artifacts:
-1. **End-of-Session Micro-Drills:** 3 to 5 rapid active-recall questions to test retention immediately.
-2. **1-Page Master Cheat Sheet:** Generate a dense reference sheet based on [cheat-sheet-template.md](./templates/cheat-sheet-template.md) containing only high-frequency formulas, codes, definitions, and trap alerts.
-3. **Predicted Mock Paper:** Generate a full simulated test based on [mock-paper-template.md](./templates/mock-paper-template.md) matching the university's marking scheme and question structure.
+1. **MCQ Drills & Mock Exams (OMR/MCQ papers like IGNOU CLIS):** use the quiz engine, which shuffles options, scores attempts, and logs progress to `progress.json`:
+
+   ```bash
+   python scripts/mcq_quiz.py --course BLII-012 --count 15   # drill with feedback
+   python scripts/mcq_quiz.py --course BLII-012 --mock       # 50-question exam simulation
+   python scripts/mcq_quiz.py --report                       # progress so far
+   ```
+
+2. **End-of-Session Micro-Drills:** 3 to 5 rapid active-recall questions to test retention immediately.
+3. **1-Page Master Cheat Sheet:** Generate a dense reference sheet based on [cheat-sheet-template.md](./templates/cheat-sheet-template.md) containing only high-frequency formulas, codes, definitions, and trap alerts.
+4. **Predicted Mock Paper:** Generate a full simulated test based on [mock-paper-template.md](./templates/mock-paper-template.md) matching the university's marking scheme and question structure.

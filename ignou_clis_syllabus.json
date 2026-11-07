@@ -1,22 +1,108 @@
-[
-  {
-    "name": "BLII-012: Document Processing & Organisation (DDC, AACR-2R, Classification & Cataloguing)",
-    "weight": 35,
-    "difficulty": "hard"
-  },
-  {
-    "name": "BLI-011: Libraries: An Introduction (5 Laws of Library Science, Types of Libraries, Routines)",
-    "weight": 25,
-    "difficulty": "medium"
-  },
-  {
-    "name": "BLII-013: Information Sources & Services (Primary/Secondary/Tertiary, CAS/SDI, Reference)",
-    "weight": 20,
-    "difficulty": "easy-medium"
-  },
-  {
-    "name": "BLII-014: ICT in Libraries (Library Automation, Koha, OPAC, Digital Libraries, Networks)",
-    "weight": 20,
-    "difficulty": "easy-medium"
-  }
-]
+{
+  "program": "IGNOU CLIS (Certificate in Library and Information Science)",
+  "exam_session": "December 2026 TEE",
+  "format": "OMR / MCQ, evening session (per IGNOU revised date sheet)",
+  "courses": [
+    {
+      "code": "BLI-011",
+      "name": "Libraries: An Introduction",
+      "exam_date": "2026-12-11",
+      "units": [
+        {
+          "name": "Ranganathan's Five Laws & their applications",
+          "weight": 20,
+          "difficulty": "easy",
+          "tier_hint": 1
+        },
+        {
+          "name": "Block 1: Library Basics & Contexts (role in society, types of libraries, functional units, staff)",
+          "weight": 40,
+          "difficulty": "medium"
+        },
+        {
+          "name": "Block 2: Library Routines (selection & acquisition, physical processing, accession register, maintenance)",
+          "weight": 40,
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "code": "BLII-012",
+      "name": "Document Processing and Organisation",
+      "exam_date": "2026-12-14",
+      "units": [
+        {
+          "name": "Classification basics + DDC (10 main classes, schedules, standard subdivisions)",
+          "weight": 35,
+          "difficulty": "hard"
+        },
+        {
+          "name": "Cataloguing basics + AACR-2R (main & added entries, MARC tags)",
+          "weight": 35,
+          "difficulty": "hard"
+        },
+        {
+          "name": "Filing rules (ALA vs CCC) + shelving & shelf rectification",
+          "weight": 15,
+          "difficulty": "easy-medium"
+        },
+        {
+          "name": "Must-memorize code bank & drills (DDC mnemonics)",
+          "weight": 15,
+          "difficulty": "medium",
+          "tier_hint": 2
+        }
+      ]
+    },
+    {
+      "code": "BLII-013",
+      "name": "Information Sources and Library Services",
+      "exam_date": "2026-12-16",
+      "units": [
+        {
+          "name": "Categories of information sources (primary / secondary / tertiary)",
+          "weight": 30,
+          "difficulty": "easy"
+        },
+        {
+          "name": "Types of sources (dictionaries, encyclopedias, yearbooks, bibliographies)",
+          "weight": 25,
+          "difficulty": "easy-medium"
+        },
+        {
+          "name": "Circulation services (charging & discharging systems)",
+          "weight": 15,
+          "difficulty": "easy"
+        },
+        {
+          "name": "Reference service (ready vs long-range) + awareness services (CAS & SDI) + user orientation",
+          "weight": 30,
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "code": "BLII-014",
+      "name": "ICT in Libraries",
+      "exam_date": "2026-12-18",
+      "units": [
+        {
+          "name": "Digital literacy (computer basics, Ubuntu, LibreOffice)",
+          "weight": 30,
+          "difficulty": "easy"
+        },
+        {
+          "name": "Library automation (housekeeping operations, Koha, OPAC)",
+          "weight": 40,
+          "difficulty": "medium"
+        },
+        {
+          "name": "Internet tools & services (networks, search engines, Web 2.0, digital libraries)",
+          "weight": 30,
+          "difficulty": "easy-medium"
+        }
+      ]
+    }
+  ],
+  "notes": "Unit weights are estimates from examples/ignou-clis-exam-blueprint.md and known PYQ archetypes. Refine them after downloading real papers with scripts/fetch_materials.py. Course codes follow the date sheet; eGyankosh labels paper 1 as 'BLII-011'."
+}

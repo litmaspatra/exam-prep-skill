@@ -25,3 +25,13 @@ Whenever a student or user provides exam details:
    - Generate a 1-page Master Cheat Sheet for final 24-hour review.
    - Create a simulated Mock Paper matching the university marking scheme.
 ```
+
+---
+
+If the exam-prep-skill repository is available (cloned locally), prefer its deterministic tools over ad-hoc searching:
+
+```bash
+python scripts/fetch_materials.py      # official IGNOU PYQs + study material
+python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
+python scripts/mcq_quiz.py --course BLII-012 --count 15   # or --mock / --report
+```

@@ -1,0 +1,6 @@
+# Downloaded study material & PYQs (re-fetchable via scripts/fetch_materials.py)
+materials/
+# Personal quiz progress
+progress.json
+__pycache__/
+*.pyc

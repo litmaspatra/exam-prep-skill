@@ -1,0 +1,966 @@
+{
+  "bank": "clis-mcq-seed",
+  "version": 1,
+  "note": "Seed bank for IGNOU CLIS Dec 2026. Grow it by extracting questions from real PYQs downloaded with scripts/fetch_materials.py.",
+  "questions": [
+    {
+      "id": "BLI011-001",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "Who propounded the Five Laws of Library Science?",
+      "options": [
+        "Melvil Dewey",
+        "S. R. Ranganathan",
+        "C. A. Cutter",
+        "W. C. B. Sayers"
+      ],
+      "answer_index": 1,
+      "explanation": "Dr. S. R. Ranganathan stated the Five Laws in 1931.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-002",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "'Books are for use' is which law of library science?",
+      "options": [
+        "First Law",
+        "Second Law",
+        "Third Law",
+        "Fourth Law"
+      ],
+      "answer_index": 0,
+      "explanation": "First Law: Books are for use.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-003",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "Weeding out damaged and obsolete books is an application of which law?",
+      "options": [
+        "First Law",
+        "Third Law",
+        "Fourth Law",
+        "Fifth Law"
+      ],
+      "answer_index": 3,
+      "explanation": "Fifth Law: a library is a growing organism - growth includes weeding.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-004",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "Introducing an open access system in a library mainly follows from which law?",
+      "options": [
+        "First Law",
+        "Second Law",
+        "Fourth Law",
+        "Fifth Law"
+      ],
+      "answer_index": 2,
+      "explanation": "Open access saves the reader's time (Fourth Law).",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-005",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "Deciding a library's location and working hours so people can use it easily is an application of which law?",
+      "options": [
+        "First Law",
+        "Second Law",
+        "Third Law",
+        "Fifth Law"
+      ],
+      "answer_index": 0,
+      "explanation": "Convenient location and hours make books usable - First Law.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-006",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "'Every reader his or her book' is which law?",
+      "options": [
+        "First Law",
+        "Second Law",
+        "Third Law",
+        "Fourth Law"
+      ],
+      "answer_index": 1,
+      "explanation": "Second Law: every reader his/her book.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-007",
+      "course": "BLI-011",
+      "block": "Five Laws",
+      "question": "In which year was Ranganathan's 'Five Laws of Library Science' first published?",
+      "options": [
+        "1928",
+        "1931",
+        "1933",
+        "1957"
+      ],
+      "answer_index": 1,
+      "explanation": "First published in 1931.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-008",
+      "course": "BLI-011",
+      "block": "Types of Libraries",
+      "question": "The National Library of India is located at:",
+      "options": [
+        "New Delhi",
+        "Mumbai",
+        "Kolkata",
+        "Chennai"
+      ],
+      "answer_index": 2,
+      "explanation": "The National Library of India is in Kolkata.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-009",
+      "course": "BLI-011",
+      "block": "Types of Libraries",
+      "question": "A public library is primarily financed from:",
+      "options": [
+        "Membership fees",
+        "Public funds / taxes",
+        "Book sales",
+        "Private donations only"
+      ],
+      "answer_index": 1,
+      "explanation": "Public libraries are maintained out of public funds and open to all.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-010",
+      "course": "BLI-011",
+      "block": "Types of Libraries",
+      "question": "A library serving a specialised user group such as a research institute is a:",
+      "options": [
+        "Public library",
+        "Academic library",
+        "Special library",
+        "National library"
+      ],
+      "answer_index": 2,
+      "explanation": "Special libraries serve a specific subject or user community.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-011",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "The accession register records:",
+      "options": [
+        "Books issued to members",
+        "Documents acquired by the library, in accession-number order",
+        "Library staff attendance",
+        "Fines collected"
+      ],
+      "answer_index": 1,
+      "explanation": "It is the chronological master record of every document added to the library.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-012",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "Before ordering a newly requested book, the acquisition section first checks:",
+      "options": [
+        "The binding quality",
+        "Whether the book is already in the library (duplicate checking)",
+        "The author's biography",
+        "The market price of other libraries"
+      ],
+      "answer_index": 1,
+      "explanation": "Duplicate checking avoids buying copies the library already holds.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-013",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "In the Browne charging system, the reader borrows books using:",
+      "options": [
+        "A date slip and book card",
+        "Borrower's tickets/pockets",
+        "A barcode reader",
+        "A register entry signed daily"
+      ],
+      "answer_index": 1,
+      "explanation": "Browne: the book's pocket is placed in the borrower's ticket.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-014",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "The Newark charging system uses:",
+      "options": [
+        "Borrower's tickets",
+        "A date slip and book card",
+        "RFID tags",
+        "A ledger of members"
+      ],
+      "answer_index": 1,
+      "explanation": "Newark: due date stamped on the date slip; the book card records the loan.",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-015",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "How many digits does an ISBN assigned after 2007 have?",
+      "options": [
+        "10",
+        "11",
+        "12",
+        "13"
+      ],
+      "answer_index": 3,
+      "explanation": "ISBNs have been 13 digits since 2007 (earlier 10).",
+      "source": "seed"
+    },
+    {
+      "id": "BLI011-016",
+      "course": "BLI-011",
+      "block": "Routines",
+      "question": "Technical processing of a newly acquired document mainly consists of:",
+      "options": [
+        "Shelving and dusting",
+        "Classification and cataloguing",
+        "Binding and lamination",
+        "Stock verification"
+      ],
+      "answer_index": 1,
+      "explanation": "Technical processing = classifying and cataloguing before the book reaches the shelf.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-001",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, the main class 000 covers:",
+      "options": [
+        "Philosophy",
+        "Computer science, information & general works",
+        "Religion",
+        "Literature"
+      ],
+      "answer_index": 1,
+      "explanation": "000 = computer science, information and generalities.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-002",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, the main class 100 is:",
+      "options": [
+        "Religion",
+        "Social sciences",
+        "Philosophy & psychology",
+        "Language"
+      ],
+      "answer_index": 2,
+      "explanation": "100 = philosophy and psychology.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-003",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, religion is class:",
+      "options": [
+        "100",
+        "200",
+        "300",
+        "400"
+      ],
+      "answer_index": 1,
+      "explanation": "200 = religion.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-004",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, the social sciences are class:",
+      "options": [
+        "200",
+        "300",
+        "500",
+        "700"
+      ],
+      "answer_index": 1,
+      "explanation": "300 = social sciences.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-005",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, class 500 covers:",
+      "options": [
+        "Technology",
+        "Arts & recreation",
+        "Natural sciences & mathematics",
+        "History & geography"
+      ],
+      "answer_index": 2,
+      "explanation": "500 = pure/natural sciences and mathematics.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-006",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, medicine falls under:",
+      "options": [
+        "510",
+        "540",
+        "610",
+        "910"
+      ],
+      "answer_index": 2,
+      "explanation": "610 = medicine and health, inside 600 technology/applied sciences.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-007",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, literature is class:",
+      "options": [
+        "700",
+        "800",
+        "900",
+        "400"
+      ],
+      "answer_index": 1,
+      "explanation": "800 = literature; 700 is arts & recreation.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-008",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "In DDC, history and geography are class:",
+      "options": [
+        "800",
+        "900",
+        "300",
+        "100"
+      ],
+      "answer_index": 1,
+      "explanation": "900 = history and geography.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-009",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "The Dewey Decimal Classification was devised by:",
+      "options": [
+        "S. R. Ranganathan",
+        "Melvil Dewey",
+        "Charles Ammi Cutter",
+        "Henry Bliss"
+      ],
+      "answer_index": 1,
+      "explanation": "Melvil Dewey published DDC's first edition in 1876.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-010",
+      "course": "BLII-012",
+      "block": "DDC",
+      "question": "How many main classes does DDC have?",
+      "options": [
+        "8",
+        "9",
+        "10",
+        "100"
+      ],
+      "answer_index": 2,
+      "explanation": "Ten main classes, 000 to 900.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-011",
+      "course": "BLII-012",
+      "block": "AACR-2R",
+      "question": "Under AACR-2R, the main entry for a work by a single personal author is made under:",
+      "options": [
+        "Title",
+        "Subject",
+        "The author's name",
+        "The publisher"
+      ],
+      "answer_index": 2,
+      "explanation": "Main entry is under the person chiefly responsible - the author.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-012",
+      "course": "BLII-012",
+      "block": "AACR-2R",
+      "question": "In AACR-2R, an 'added entry' is:",
+      "options": [
+        "The main entry itself",
+        "Any entry other than the main entry (e.g. title, subject, collaborator)",
+        "Only the shelf-list card",
+        "An entry for periodicals"
+      ],
+      "answer_index": 1,
+      "explanation": "Added entries give extra access points beyond the main entry.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-013",
+      "course": "BLII-012",
+      "block": "AACR-2R",
+      "question": "In MARC21, the tag 245 records:",
+      "options": [
+        "The ISBN",
+        "The title statement",
+        "The author's dates",
+        "The price"
+      ],
+      "answer_index": 1,
+      "explanation": "245 = title statement; 100 = main personal name.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-014",
+      "course": "BLII-012",
+      "block": "AACR-2R",
+      "question": "In MARC21, the ISBN is recorded in tag:",
+      "options": [
+        "020",
+        "100",
+        "245",
+        "650"
+      ],
+      "answer_index": 0,
+      "explanation": "020 = International Standard Book Number.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-015",
+      "course": "BLII-012",
+      "block": "Filing & Shelving",
+      "question": "The Classified Catalogue Code (CCC) was developed by:",
+      "options": [
+        "Melvil Dewey",
+        "S. R. Ranganathan",
+        "The American Library Association",
+        "IFLA"
+      ],
+      "answer_index": 1,
+      "explanation": "CCC is Ranganathan's catalogue code.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII012-016",
+      "course": "BLII-012",
+      "block": "Filing & Shelving",
+      "question": "Shelf rectification means:",
+      "options": [
+        "Repairing broken shelves",
+        "Checking shelves and restoring books to their correct order",
+        "Counting the collection annually",
+        "Labelling new shelves"
+      ],
+      "answer_index": 1,
+      "explanation": "Rectification = reading the shelf order and correcting misplaced books.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-001",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "A patent, thesis or research report is a:",
+      "options": [
+        "Primary source",
+        "Secondary source",
+        "Tertiary source",
+        "Non-documentary source"
+      ],
+      "answer_index": 0,
+      "explanation": "Original first-hand research output = primary source.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-002",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "An encyclopedia is a:",
+      "options": [
+        "Primary source",
+        "Secondary source",
+        "Tertiary source",
+        "Grey literature"
+      ],
+      "answer_index": 1,
+      "explanation": "Encyclopedias compile and arrange published knowledge - secondary.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-003",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "A bibliography of bibliographies is a:",
+      "options": [
+        "Primary source",
+        "Secondary source",
+        "Tertiary source",
+        "Primary periodical"
+      ],
+      "answer_index": 2,
+      "explanation": "It guides you to secondary sources - tertiary.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-004",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "A dictionary is generally treated as a:",
+      "options": [
+        "Primary source",
+        "Secondary source",
+        "Tertiary source",
+        "Non-book material"
+      ],
+      "answer_index": 1,
+      "explanation": "Dictionaries, encyclopedias and textbooks are secondary sources.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-005",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "The main role of tertiary sources is to:",
+      "options": [
+        "Report original research",
+        "Guide the user to primary and secondary sources",
+        "Replace reference service",
+        "Provide raw data"
+      ],
+      "answer_index": 1,
+      "explanation": "Tertiary sources (e.g. bibliography of bibliographies, directory of directories) point to other sources.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-006",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "A newspaper is generally regarded as a:",
+      "options": [
+        "Primary source of current information",
+        "Secondary source",
+        "Tertiary source",
+        "Reference book"
+      ],
+      "answer_index": 0,
+      "explanation": "Newspapers carry first-hand current reporting - primary.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-007",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "'The World of Learning' is a:",
+      "options": [
+        "Encyclopedia",
+        "Directory of educational institutions",
+        "Yearbook of statistics",
+        "Bibliography"
+      ],
+      "answer_index": 1,
+      "explanation": "It lists universities, colleges and learned bodies worldwide.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-008",
+      "course": "BLII-013",
+      "block": "Sources",
+      "question": "A yearbook mainly provides:",
+      "options": [
+        "Fiction reviews",
+        "Facts and statistics of a particular year",
+        "Word meanings",
+        "Original research papers"
+      ],
+      "answer_index": 1,
+      "explanation": "Yearbooks are annual compendia of facts and trends.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-009",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "SDI stands for:",
+      "options": [
+        "Standard Document Index",
+        "Selective Dissemination of Information",
+        "Systematic Data Inventory",
+        "Subject Directory of Information"
+      ],
+      "answer_index": 1,
+      "explanation": "SDI pushes new information matching a user's profile.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-010",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "CAS in library services stands for:",
+      "options": [
+        "Catalogue Access System",
+        "Current Awareness Service",
+        "Central Acquisition Section",
+        "Classification And Shelving"
+      ],
+      "answer_index": 1,
+      "explanation": "CAS keeps users aware of new developments in their field.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-011",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "Ready reference service deals with:",
+      "options": [
+        "Long literature searches",
+        "Fact-finding questions answered quickly from ready-reference sources",
+        "Inter-library loan only",
+        "Book selection"
+      ],
+      "answer_index": 1,
+      "explanation": "Short factual answers from dictionaries, yearbooks, directories, etc.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-012",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "Long-range reference service typically involves:",
+      "options": [
+        "One-word answers",
+        "Prepared searches such as bibliographies, done over a longer time",
+        "Telephone enquiries only",
+        "Issue of rare books"
+      ],
+      "answer_index": 1,
+      "explanation": "Long-range service needs extended search time and compiled outputs.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-013",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "An indexing or abstracting periodical is a:",
+      "options": [
+        "Primary source",
+        "Secondary source",
+        "Tertiary source",
+        "Trade catalogue"
+      ],
+      "answer_index": 1,
+      "explanation": "It arranges and points to primary literature - secondary.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-014",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "In circulation work, 'discharging' means:",
+      "options": [
+        "Issuing a book to a member",
+        "Recording the return of a borrowed document and cancelling the loan record",
+        "Removing a book from stock",
+        "Sending overdue reminders"
+      ],
+      "answer_index": 1,
+      "explanation": "Charging = recording the issue; discharging = recording the return.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-015",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "User orientation in a library aims at:",
+      "options": [
+        "Training library staff",
+        "Introducing new users to the library's resources, services and rules",
+        "Arranging books on shelves",
+        "Stock verification"
+      ],
+      "answer_index": 1,
+      "explanation": "Orientation (user education) familiarises readers with the library.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII013-016",
+      "course": "BLII-013",
+      "block": "Services",
+      "question": "Reference books such as encyclopedias and dictionaries in the reference section are usually:",
+      "options": [
+        "Issued for a month",
+        "Meant for consultation inside the library, not issued",
+        "Sold to members",
+        "Kept in the binding section"
+      ],
+      "answer_index": 1,
+      "explanation": "Ready-reference works stay in the library so they are always available.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-001",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "Koha is:",
+      "options": [
+        "A commercial operating system",
+        "An open-source Integrated Library Management System (ILS)",
+        "A search engine",
+        "A word processor"
+      ],
+      "answer_index": 1,
+      "explanation": "Koha is a free, open-source ILS used for library automation.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-002",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "OPAC stands for:",
+      "options": [
+        "Online Public Access Catalogue",
+        "Open Protocol for Automated Classification",
+        "Offline Periodical Access Centre",
+        "Optical Print And Copy"
+      ],
+      "answer_index": 0,
+      "explanation": "The OPAC lets users search the library catalogue online.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-003",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "Koha was first developed in:",
+      "options": [
+        "India",
+        "USA",
+        "New Zealand",
+        "UK"
+      ],
+      "answer_index": 2,
+      "explanation": "Koha originated in New Zealand (Katipo Communications, 1999-2000).",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-004",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "SOUL (Software for University Libraries) was developed by:",
+      "options": [
+        "NIC",
+        "INFLIBNET",
+        "DRDO",
+        "NASSCOM"
+      ],
+      "answer_index": 1,
+      "explanation": "SOUL is INFLIBNET's library management software.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-005",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "Library automation primarily means computerising:",
+      "options": [
+        "Only the OPAC",
+        "Housekeeping operations: acquisition, cataloguing, circulation and serials control",
+        "The library building",
+        "Only member photographs"
+      ],
+      "answer_index": 1,
+      "explanation": "Automation covers all housekeeping operations, not just the catalogue.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-006",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "RFID technology in libraries is mainly used for:",
+      "options": [
+        "Printing catalogues",
+        "Self check-in/check-out and fast stock verification",
+        "Binding books",
+        "Designing websites"
+      ],
+      "answer_index": 1,
+      "explanation": "RFID tags identify items by radio waves - quick issue, return and shelf audit.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-007",
+      "course": "BLII-014",
+      "block": "Automation",
+      "question": "A barcode on a library book normally encodes its:",
+      "options": [
+        "Price",
+        "Accession number",
+        "Author's name",
+        "ISBN price code"
+      ],
+      "answer_index": 1,
+      "explanation": "The barcode stores the item's accession number for circulation.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-008",
+      "course": "BLII-014",
+      "block": "Digital Literacy",
+      "question": "Ubuntu is:",
+      "options": [
+        "A library network",
+        "An open-source operating system (a Linux distribution)",
+        "A cataloguing standard",
+        "An antivirus program"
+      ],
+      "answer_index": 1,
+      "explanation": "Ubuntu is a free Linux-based operating system.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-009",
+      "course": "BLII-014",
+      "block": "Digital Literacy",
+      "question": "In LibreOffice, the word-processing application equivalent to MS Word is:",
+      "options": [
+        "Calc",
+        "Impress",
+        "Writer",
+        "Base"
+      ],
+      "answer_index": 2,
+      "explanation": "Writer = documents, Calc = spreadsheets, Impress = presentations."
+    },
+    {
+      "id": "BLII014-010",
+      "course": "BLII-014",
+      "block": "Digital Literacy",
+      "question": "PDF stands for:",
+      "options": [
+        "Printed Document File",
+        "Portable Document Format",
+        "Public Data File",
+        "Personal Digital Folder"
+      ],
+      "answer_index": 1,
+      "explanation": "Portable Document Format.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-011",
+      "course": "BLII-014",
+      "block": "Networks & Internet",
+      "question": "LAN stands for:",
+      "options": [
+        "Large Area Network",
+        "Local Area Network",
+        "Library Access Node",
+        "Linked Array Network"
+      ],
+      "answer_index": 1,
+      "explanation": "A LAN connects computers within a limited area such as a building.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-012",
+      "course": "BLII-014",
+      "block": "Networks & Internet",
+      "question": "A search engine such as Google works by:",
+      "options": [
+        "Storing all web pages on your computer",
+        "Indexing web pages and retrieving matches for a query",
+        "Charging libraries per search",
+        "Sending emails"
+      ],
+      "answer_index": 1,
+      "explanation": "Search engines crawl and index the web, then match your keywords.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-013",
+      "course": "BLII-014",
+      "block": "Networks & Internet",
+      "question": "Web 2.0 is characterised by:",
+      "options": [
+        "Read-only static pages",
+        "User participation and interaction (blogs, wikis, social networking)",
+        "No internet connection",
+        "Mainframe terminals"
+      ],
+      "answer_index": 1,
+      "explanation": "Web 2.0 = the participatory, interactive web.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-014",
+      "course": "BLII-014",
+      "block": "Digital Libraries",
+      "question": "DSpace is:",
+      "options": [
+        "An open-source digital repository software",
+        "A charging system",
+        "A classification scheme",
+        "A web browser"
+      ],
+      "answer_index": 0,
+      "explanation": "DSpace builds institutional/digital repositories (eGyankosh itself runs on it).",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-015",
+      "course": "BLII-014",
+      "block": "Digital Libraries",
+      "question": "A digital library is:",
+      "options": [
+        "A library with only printed books",
+        "A collection of documents in organised electronic form, accessible online",
+        "A computer showroom",
+        "An offline card catalogue"
+      ],
+      "answer_index": 1,
+      "explanation": "Digital libraries store and serve documents in electronic form.",
+      "source": "seed"
+    },
+    {
+      "id": "BLII014-016",
+      "course": "BLII-014",
+      "block": "Digital Libraries",
+      "question": "Greenstone is:",
+      "options": [
+        "Open-source digital library software",
+        "A library building material",
+        "A commercial ILS",
+        "A network cable"
+      ],
+      "answer_index": 0,
+      "explanation": "Greenstone is free software for building digital library collections.",
+      "source": "seed"
+    }
+  ]
+}

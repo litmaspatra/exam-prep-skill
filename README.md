@@ -13,6 +13,7 @@ An intelligent, multi-platform exam preparation and curriculum acceleration skil
 
 ## 🌟 Key Features
 
+0. **Deterministic Official Material Fetching (IGNOU):** `scripts/fetch_materials.py` downloads previous year question papers (webservices.ignou.ac.in) and full study material (eGyankosh) - official, free, no login, resumable.
 1. **Automated PYQ & Blueprint Intelligence:**
    - Researches previous year question papers (PYQs), marking schemes, and recurring question archetypes for specific universities (IGNOU, DU, Anna Univ, etc.) or standardized exams (GATE, GRE).
    - Identifies whether the exam is descriptive or objective (e.g. OMR/MCQs) to tailor your study strategy.
@@ -23,7 +24,9 @@ An intelligent, multi-platform exam preparation and curriculum acceleration skil
 3. **Intuitive First-Principles Teaching:**
    - **Mathematics & Quantitative:** Physical intuition $\to$ Minimal formula $\to$ 3-step benchmark problem $\to$ Exam trap alert.
    - **Classification Systems & Taxonomies (e.g., Dewey Decimal Classification - DDC):** Must-memorize code bank, 10-class story mnemonic, 3-step decision algorithms, and practice drills.
-4. **Actionable Revision Artifacts:**
+4. **MCQ Drill & Mock Exam Engine:** `scripts/mcq_quiz.py` runs option-shuffled drills and 50-question OMR mock simulations per course, with explanations and a persistent `progress.json` score history.
+5. **Multi-Exam Planning:** the planner handles several courses with staggered exam dates (e.g. IGNOU CLIS Dec 2026: BLI-011/BLII-012/013/014), splits the shared study pool across courses, and emits a day-by-day calendar.
+6. **Actionable Revision Artifacts:**
    - Rapid-fire active recall drills.
    - 1-Page Master Cheat Sheets for the final 24-hour review.
    - Predicted Mock Exam Papers matching official university marking schemes.
@@ -110,8 +113,12 @@ exam-prep-skill/
 ├── codex/                           # OpenAI Codex / GPT-4o / ChatGPT Custom Instructions
 │   └── codex_instructions.md        # Custom instruction prompt
 ├── scripts/
-│   ├── exam_planner.py              # Standalone CLI planner
+│   ├── exam_planner.py              # CLI planner (single-exam + multi-exam calendar)
+│   ├── fetch_materials.py           # Official IGNOU PYQ + SLM downloader
+│   ├── mcq_quiz.py                  # MCQ drill & mock exam engine (progress.json)
 │   └── install.py                   # Multi-platform universal installer
+├── data/
+│   └── clis_mcq_bank.json           # Seed MCQ bank (grow it from fetched PYQs)
 ├── examples/
 │   ├── dewey-decimal-classification-mastery.md  # Concrete DDC teaching case study
 │   ├── curated-1-month-plan-sample.md           # Concrete 30-day Pareto sprint plan
@@ -127,11 +134,20 @@ exam-prep-skill/
 Generate an instant time-budgeted study breakdown directly from your terminal:
 
 ```bash
-# Basic usage: 30 days remaining, 3.5 hours/day
+# Single exam: 34 days remaining, 3 hours/day
 python scripts/exam_planner.py --exam-date 2026-12-11 --daily-hours 3.0
 
-# With custom syllabus JSON:
-python scripts/exam_planner.py --exam-date 2026-12-11 --daily-hours 2.5 --syllabus ignou_clis_syllabus.json
+# Multi-exam structured syllabus (IGNOU CLIS Dec 2026, 4 papers):
+python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
+```
+
+### IGNOU CLIS Quickstart
+```bash
+python scripts/fetch_materials.py                          # official PYQs + study material -> materials/
+python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0   # full Dec 2026 plan
+python scripts/mcq_quiz.py --course BLII-012 --count 15    # drill one paper
+python scripts/mcq_quiz.py --course BLI-011 --mock         # 50-question mock
+python scripts/mcq_quiz.py --report                        # your score history
 ```
 
 ---

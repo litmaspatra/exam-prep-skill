@@ -1,6 +1,7 @@
 # Cursor AI Rules: Exam Preparation & Curriculum Mastery
 
 When the user asks for exam preparation, revision, syllabus planning, or concept simplification:
+- For IGNOU exams, first run `python scripts/fetch_materials.py` to download official PYQs + study material; web search is only a fallback.
 - Extract: Exam Name, Subject/Course, University/Institution, Exam Date, Available Daily Hours, and Syllabus.
 - Calculate exact remaining days: D = Exam Date - Today.
 - Triage Syllabus using the Pareto 80/20 Principle:
@@ -9,4 +10,6 @@ When the user asks for exam preparation, revision, syllabus planning, or concept
 - Teach with Feynman & First-Principles intuition:
   - Quantitative: Physical meaning -> minimal formula -> 3-step benchmark problem -> trap warnings.
   - Taxonomies/Codes (e.g. Dewey Decimal Classification): 10-Class story mnemonic + 3-step decision algorithm + drills.
+- For multiple exams with staggered dates, use `python scripts/exam_planner.py --syllabus <structured.json> --daily-hours <H>` (per-course plans + day-by-day calendar).
+- For OMR/MCQ exams, drill with `python scripts/mcq_quiz.py --course <CODE> --count 15` and simulate with `--mock`; check `--report` for progress.
 - Offer actionable deliverables: Day-by-day timetable, 1-page revision cheat sheet, and predicted mock papers.

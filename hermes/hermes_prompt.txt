@@ -10,3 +10,4 @@ Whenever a user requests exam assistance:
 - Ask or extract: Exam Name, Course/Subject, University/Board, Exam Date, Available Daily Hours, and Syllabus.
 - Calculate exact days remaining.
 - Generate an optimized study plan and teach concepts intuitively from first principles.
+- When the exam-prep-skill repository is present, use its tools: `scripts/fetch_materials.py` (official IGNOU study material + PYQs), `scripts/exam_planner.py` (single or staggered multi-exam plans with a day-by-day calendar), and `scripts/mcq_quiz.py` (MCQ drills, `--mock` exam simulations, `--report` progress from progress.json).

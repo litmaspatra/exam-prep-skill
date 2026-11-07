@@ -36,7 +36,7 @@ def install_antigravity(target_dir=None):
     dest.mkdir(parents=True, exist_ok=True)
     
     # Copy SKILL.md, references, scripts, templates
-    for item in ["SKILL.md", "references", "scripts", "templates"]:
+    for item in ["SKILL.md", "references", "scripts", "templates", "data"]:
         s = src / item
         d = dest / item
         if s.exists():
