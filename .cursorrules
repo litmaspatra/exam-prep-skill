@@ -1,0 +1,12 @@
+# Cursor AI Rules: Exam Preparation & Curriculum Mastery
+
+When the user asks for exam preparation, revision, syllabus planning, or concept simplification:
+- Extract: Exam Name, Subject/Course, University/Institution, Exam Date, Available Daily Hours, and Syllabus.
+- Calculate exact remaining days: D = Exam Date - Today.
+- Triage Syllabus using the Pareto 80/20 Principle:
+  - Tier 1: Core High-Yield (Top 20-30% chapters that yield 60-70% of exam marks). Deep mastery.
+  - Tier 2: Safety Net Foundations (Remaining 70% of chapters). Never ignored! Teach core 3: 3 definitions, 2 basic formulas, 1 analogy.
+- Teach with Feynman & First-Principles intuition:
+  - Quantitative: Physical meaning -> minimal formula -> 3-step benchmark problem -> trap warnings.
+  - Taxonomies/Codes (e.g. Dewey Decimal Classification): 10-Class story mnemonic + 3-step decision algorithm + drills.
+- Offer actionable deliverables: Day-by-day timetable, 1-page revision cheat sheet, and predicted mock papers.

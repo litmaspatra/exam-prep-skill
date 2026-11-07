@@ -1,0 +1,22 @@
+[
+  {
+    "name": "BLII-012: Document Processing & Organisation (DDC, AACR-2R, Classification & Cataloguing)",
+    "weight": 35,
+    "difficulty": "hard"
+  },
+  {
+    "name": "BLI-011: Libraries: An Introduction (5 Laws of Library Science, Types of Libraries, Routines)",
+    "weight": 25,
+    "difficulty": "medium"
+  },
+  {
+    "name": "BLII-013: Information Sources & Services (Primary/Secondary/Tertiary, CAS/SDI, Reference)",
+    "weight": 20,
+    "difficulty": "easy-medium"
+  },
+  {
+    "name": "BLII-014: ICT in Libraries (Library Automation, Koha, OPAC, Digital Libraries, Networks)",
+    "weight": 20,
+    "difficulty": "easy-medium"
+  }
+]

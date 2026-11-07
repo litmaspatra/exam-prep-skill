@@ -1,0 +1,37 @@
+{
+  "name": "exam_prep",
+  "description": "Prepares students for university, competitive, or licensing exams through PYQ intelligence, time-budgeted Pareto curriculum curation, and intuitive first-principles teaching.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "exam_name": {
+        "type": "string",
+        "description": "Name of the exam (e.g., IGNOU CLIS, GATE, Semester Final)"
+      },
+      "subject": {
+        "type": "string",
+        "description": "Subject or course name (e.g., BLII-012 Document Processing, Calculus, Operating Systems)"
+      },
+      "university": {
+        "type": "string",
+        "description": "Name of the university, board, or examining body"
+      },
+      "exam_date": {
+        "type": "string",
+        "description": "Target exam date in YYYY-MM-DD format"
+      },
+      "daily_study_hours": {
+        "type": "number",
+        "description": "Available study hours per day (default: 3.0)"
+      },
+      "syllabus": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "List of chapters, modules, or syllabus topics"
+      }
+    },
+    "required": ["exam_name", "subject", "exam_date"]
+  }
+}
