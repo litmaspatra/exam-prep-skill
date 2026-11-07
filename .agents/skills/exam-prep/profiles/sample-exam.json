@@ -1,0 +1,41 @@
+{
+  "id": "sample-exam",
+  "name": "Sample Exam (template - copy me)",
+  "institution": "Sample University",
+  "exam_session": "January 2027",
+  "format": "mixed",
+  "marking": {"marks_per_paper": 70, "duration_hours": 3, "negative_marking": false},
+  "papers": [
+    {
+      "code": "PHY-01",
+      "name": "Mechanics & Waves",
+      "exam_date": "2027-01-10",
+      "units": [
+        {"name": "Kinematics & Newton's laws", "weight": 30, "difficulty": "medium"},
+        {"name": "Work, energy & momentum", "weight": 25, "difficulty": "medium"},
+        {"name": "Rotational motion", "weight": 20, "difficulty": "hard"},
+        {"name": "Simple harmonic motion & waves", "weight": 25, "difficulty": "easy-medium"}
+      ]
+    },
+    {
+      "code": "PHY-02",
+      "name": "Electricity & Magnetism",
+      "exam_date": "2027-01-13",
+      "units": [
+        {"name": "Electrostatics & capacitors", "weight": 35, "difficulty": "hard"},
+        {"name": "Current electricity & circuits", "weight": 35, "difficulty": "medium"},
+        {"name": "Magnetism & induction", "weight": 30, "difficulty": "medium"}
+      ]
+    }
+  ],
+  "sources": {
+    "pyq_archive": {"adapter": "ignou-pyq-archive", "archive_path": "SCHOOL/PROGRAMME",
+                    "codes": ["PHY-01", "PHY-02"], "from_year": 2022, "to_year": 2025,
+                    "sessions": ["June", "December"]},
+    "url_list": [
+      {"url": "https://example.org/papers/PHY-01-sample.pdf", "folder": "PHY-01"}
+    ]
+  },
+  "mcq_bank": "data/sample-bank.json",
+  "notes": "Template profile. Create your own with: python scripts/new_profile.py"
+}

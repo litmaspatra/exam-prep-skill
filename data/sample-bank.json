@@ -1,0 +1,12 @@
+{
+  "bank": "sample-exam-seed",
+  "version": 1,
+  "note": "Seed bank for the sample profile. Two MCQs and two flashcards show both supported question types. Replace with your own exam's questions.",
+  "questions": [
+    {"id": "PHY01-001", "course": "PHY-01", "type": "mcq", "question": "A body in uniform motion has zero:", "options": ["Velocity", "Acceleration", "Displacement", "Momentum"], "answer_index": 1, "explanation": "Uniform velocity means no acceleration.", "source": "seed"},
+    {"id": "PHY01-002", "course": "PHY-01", "type": "mcq", "question": "The SI unit of work is the:", "options": ["Watt", "Newton", "Joule", "Pascal"], "answer_index": 2, "explanation": "Work and energy are measured in joules.", "source": "seed"},
+    {"id": "PHY02-001", "course": "PHY-02", "type": "mcq", "question": "Ohm's law relates voltage, current and:", "options": ["Power", "Resistance", "Capacitance", "Inductance"], "answer_index": 1, "explanation": "V = I x R.", "source": "seed"},
+    {"id": "PHY01-101", "course": "PHY-01", "type": "flashcard", "question": "State Newton's second law of motion.", "answer": "The rate of change of momentum of a body is proportional to the applied force and takes place in the direction of the force (F = ma).", "source": "seed"},
+    {"id": "PHY02-101", "course": "PHY-02", "type": "flashcard", "question": "Define one farad of capacitance.", "answer": "A capacitor has a capacitance of one farad when one coulomb of charge raises the potential difference between its plates by one volt.", "source": "seed"}
+  ]
+}

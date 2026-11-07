@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
 """
-Fetch official, free IGNOU study material and previous year question papers.
+Fetch study material and previous year question papers (PYQs) for any exam.
 
-Sources (both official IGNOU, free, no login, no card):
-  * PYQs : webservices.ignou.ac.in pre-question archive.
-           URLs are deterministic:
-           .../pre-question/Question Paper <Session> <Year>/SOSS/CLIS/<CODE>.pdf
-  * SLM  : eGyankosh (egyankosh.ac.in), the official IGNOU repository.
-           CLIS community: https://egyankosh.ac.in/handle/123456789/34843
-           The script crawls the community (course sub-communities -> blocks
-           -> item pages) and downloads every PDF bitstream it finds.
+Sources are configured per exam profile (profiles/<exam>.json, "sources" key).
+Pluggable adapters:
+
+  * ignou-pyq-archive : IGNOU's official previous-question archive
+                        (webservices.ignou.ac.in). Works for any programme:
+                        set "archive_path" (e.g. "SOSS/XXXX") in the profile.
+                        URLs are deterministic, no searching needed.
+  * dspace-community  : any DSpace repository community/collection (e.g. an
+                        eGyankosh community). Crawls sub-communities and item
+                        pages and downloads every PDF bitstream it finds.
+  * url-list          : a plain list of PDF URLs in the profile
+                        ("url_list": [{"url": ..., "folder": ...}]) or a text
+                        file of URLs via --url-file.
 
 Stdlib only. Safe to re-run: existing files are skipped, failures are listed
-at the end so you can retry. Run from the repo root:
+at the end so you can retry. Examples:
 
-    python scripts/fetch_materials.py                 # everything
-    python scripts/fetch_materials.py --pyqs          # question papers only
-    python scripts/fetch_materials.py --slm           # study material only
-    python scripts/fetch_materials.py --dry-run       # list what it would get
+    python scripts/fetch_materials.py --profile my-exam            # all sources in the profile
+    python scripts/fetch_materials.py --profile my-exam --dry-run  # show what it would get
+    python scripts/fetch_materials.py --url-file urls.txt          # one-off list of PDF URLs
 """
 
 import argparse
+import json
 import re
 import sys
 import time
@@ -35,16 +40,25 @@ if sys.platform == "win32":
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 UA = {"User-Agent": "Mozilla/5.0 (exam-prep-skill; personal educational use)"}
+IGNOU_PYQ_PATTERN = ("https://webservices.ignou.ac.in/pre-question/"
+                     "Question%20Paper%20{session}%20{year}/{archive_path}/{code}{ext}")
+DEFAULT_CODE_RE = r"\b([A-Z]{2,6}-?\d{3,})\b"
 
-PYQ_PATTERN = ("https://webservices.ignou.ac.in/pre-question/"
-               "Question%20Paper%20{session}%20{year}/SOSS/CLIS/{code}{ext}")
-EGY_ROOT = "https://egyankosh.ac.in/handle/123456789/34843"
-EGY_HOST = "egyankosh.ac.in"
 
-DEFAULT_CODES = ["BLI-011", "BLII-012", "BLII-013", "BLII-014"]
-# eGyankosh labels paper 1 "BLII-011"; the date sheet & PYQ archive use "BLI-011".
-CODE_ALIASES = {"BLII-011": "BLI-011"}
-CODE_RE = re.compile(r"\b(BLII?-?\d{3})\b", re.IGNORECASE)
+def load_profile(arg):
+    cand = Path(arg)
+    if cand.exists():
+        return json.loads(cand.read_text(encoding="utf-8"))
+    prof_dir = REPO_ROOT / "profiles"
+    for f in sorted(prof_dir.glob("*.json")):
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if arg.lower() in (d.get("id", "").lower(), f.stem.lower(), d.get("name", "").lower()):
+            return d
+    raise SystemExit(f"Profile '{arg}' not found (looked in {prof_dir}). "
+                     f"Create one with: python scripts/new_profile.py")
 
 
 def fetch_bytes(url, timeout):
@@ -64,17 +78,25 @@ def download_pdf(url, dest, timeout):
 
 
 # ---------------------------------------------------------------------------
-# Previous Year Question papers (deterministic URLs)
+# Adapter: ignou-pyq-archive (deterministic PYQ URLs)
 # ---------------------------------------------------------------------------
 
-def fetch_pyqs(out_dir, codes, years, sessions, timeout, dry_run):
+def fetch_pyq_archive(cfg, out_dir, timeout, dry_run):
+    archive_path = cfg.get("archive_path")
+    codes = cfg.get("codes", [])
+    if not archive_path or not codes:
+        print("  [!] pyq_archive adapter needs 'archive_path' and 'codes' in the profile.")
+        return {"downloaded": [], "skipped": [], "missed": [], "failed": []}
+    years = range(cfg.get("from_year", 2019), cfg.get("to_year", 2025) + 1)
+    sessions = cfg.get("sessions", ["June", "December"])
     stats = {"downloaded": [], "skipped": [], "missed": [], "failed": []}
     for code in codes:
         for year in years:
             for session in sessions:
                 got = False
                 for ext in (".pdf", ".PDF"):
-                    url = PYQ_PATTERN.format(session=session, year=year, code=code, ext=ext)
+                    url = IGNOU_PYQ_PATTERN.format(session=session, year=year,
+                                                   archive_path=archive_path, code=code, ext=ext)
                     dest = out_dir / "pyqs" / code / f"{code}_{session}_{year}.pdf"
                     if dry_run:
                         print(f"  would try: {url}")
@@ -93,7 +115,7 @@ def fetch_pyqs(out_dir, codes, years, sessions, timeout, dry_run):
                     except urllib.error.HTTPError as e:
                         if e.code != 404:
                             stats["failed"].append((url, f"HTTP {e.code}"))
-                            got = True  # don't also try the other extension
+                            got = True
                             break
                     except Exception as e:
                         stats["failed"].append((url, str(e)))
@@ -105,7 +127,7 @@ def fetch_pyqs(out_dir, codes, years, sessions, timeout, dry_run):
 
 
 # ---------------------------------------------------------------------------
-# eGyankosh study material (DSpace crawl)
+# Adapter: dspace-community (crawl any DSpace community/collection for PDFs)
 # ---------------------------------------------------------------------------
 
 class LinkParser(HTMLParser):
@@ -131,19 +153,24 @@ class LinkParser(HTMLParser):
             self._href = None
 
 
-def course_from_text(text):
-    m = CODE_RE.search(text or "")
-    if not m:
-        return None
-    code = m.group(1).upper()
-    if "-" not in code:  # normalise BLII012 -> BLII-012
-        code = re.sub(r"^(BLII?)(\d)", r"\1-\2", code)
-    return CODE_ALIASES.get(code, code)
+def fetch_dspace_community(cfg, out_dir, timeout, delay, max_files, dry_run):
+    root = cfg.get("community")
+    if not root:
+        print("  [!] dspace-community adapter needs 'community' (URL) in the profile.")
+        return {"downloaded": [], "skipped": [], "failed": [], "pages": 0}
+    host = urlparse(root).netloc
+    code_re = re.compile(cfg.get("code_regex", DEFAULT_CODE_RE))
+    aliases = cfg.get("course_aliases", {})
+    handle_re = re.compile(r"/handle/[^/]+/\d+")
 
+    def code_from(text):
+        m = code_re.search(text or "")
+        if not m:
+            return None
+        return aliases.get(m.group(1), m.group(1))
 
-def fetch_slm(out_dir, timeout, delay, max_files, dry_run):
     stats = {"downloaded": [], "skipped": [], "failed": [], "pages": 0}
-    queue = [(EGY_ROOT, None, 0)]  # (url, course context, depth)
+    queue = [(root, None, 0)]  # (url, course context, depth)
     visited = set()
     count = 0
     while queue:
@@ -161,13 +188,13 @@ def fetch_slm(out_dir, timeout, delay, max_files, dry_run):
         parser.feed(html)
         for href, text in parser.links:
             full = urljoin(url, href)
-            if urlparse(full).netloc != EGY_HOST:
+            if urlparse(full).netloc != host:
                 continue
             low = full.lower()
             if "/bitstream/" in low and ".pdf" in low:
                 m = re.search(r"/([^/]+\.pdf)", full, re.IGNORECASE)
                 fname = m.group(1) if m else "document.pdf"
-                folder = ctx or "Programme-Guide"
+                folder = ctx or "misc"
                 dest = out_dir / "study_material" / folder / fname
                 if dry_run:
                     print(f"  would get [{folder}] {fname}")
@@ -186,56 +213,87 @@ def fetch_slm(out_dir, timeout, delay, max_files, dry_run):
                     time.sleep(delay)
                 except Exception as e:
                     stats["failed"].append((full, str(e)))
-            elif "/handle/123456789/" in low:
-                code = course_from_text(text)
-                new_ctx = code if code else ctx
-                queue.append((full, new_ctx, depth + 1))
+            elif handle_re.search(full):
+                c = code_from(text)
+                queue.append((full, c if c else ctx, depth + 1))
         time.sleep(delay)
+    return stats
+
+
+# ---------------------------------------------------------------------------
+# Adapter: url-list
+# ---------------------------------------------------------------------------
+
+def fetch_url_list(items, out_dir, timeout, dry_run):
+    stats = {"downloaded": [], "skipped": [], "failed": []}
+    for item in items:
+        url = item["url"] if isinstance(item, dict) else item
+        folder = item.get("folder", "misc") if isinstance(item, dict) else "misc"
+        name = item.get("name") if isinstance(item, dict) else None
+        fname = name or re.search(r"/([^/]+\.pdf)", url, re.IGNORECASE)
+        fname = fname if isinstance(fname, str) else (fname.group(1) if fname else "document.pdf")
+        dest = out_dir / "extra" / folder / fname
+        if dry_run:
+            print(f"  would get: {url}")
+            continue
+        if dest.exists() and dest.stat().st_size > 0:
+            stats["skipped"].append(str(dest))
+            continue
+        try:
+            size = download_pdf(url, dest, timeout)
+            stats["downloaded"].append(str(dest))
+            print(f"  [ok] {fname} ({size // 1024} KB)")
+        except Exception as e:
+            stats["failed"].append((url, str(e)))
     return stats
 
 
 # ---------------------------------------------------------------------------
 
 def main():
-    ap = argparse.ArgumentParser(description="Download official free IGNOU CLIS study material and PYQs.")
-    ap.add_argument("--pyqs", action="store_true", help="Fetch previous year question papers")
-    ap.add_argument("--slm", action="store_true", help="Fetch eGyankosh study material")
-    ap.add_argument("--out", default=str(REPO_ROOT / "materials"), help="Output directory")
-    ap.add_argument("--codes", nargs="+", default=DEFAULT_CODES)
-    ap.add_argument("--from-year", type=int, default=2019)
-    ap.add_argument("--to-year", type=int, default=2025)
-    ap.add_argument("--sessions", nargs="+", default=["June", "December"])
+    ap = argparse.ArgumentParser(description="Download study material and PYQs for any exam profile.")
+    ap.add_argument("--profile", help="Exam profile: id/name in profiles/ or a path")
+    ap.add_argument("--url-file", help="Text file with one PDF URL per line (no profile needed)")
+    ap.add_argument("--out", default=None, help="Output directory (default: materials/<profile-id>/)")
     ap.add_argument("--timeout", type=int, default=30)
-    ap.add_argument("--delay", type=float, default=1.0, help="Seconds between SLM requests (be polite)")
-    ap.add_argument("--max-files", type=int, default=250, help="Safety cap on SLM downloads per run")
+    ap.add_argument("--delay", type=float, default=1.0, help="Seconds between crawl requests (be polite)")
+    ap.add_argument("--max-files", type=int, default=250, help="Safety cap on crawled downloads per run")
     ap.add_argument("--dry-run", action="store_true", help="List what would be downloaded, get nothing")
     args = ap.parse_args()
 
-    if not (args.pyqs or args.slm):
-        args.pyqs = args.slm = True
+    profile = None
+    if args.profile:
+        profile = load_profile(args.profile)
+    elif not args.url_file:
+        ap.error("give --profile <exam> or --url-file <urls.txt>")
 
-    out_dir = Path(args.out)
-    years = list(range(args.from_year, args.to_year + 1))
+    out_dir = Path(args.out) if args.out else REPO_ROOT / "materials" / (profile.get("id", "misc") if profile else "misc")
     print(f"Output: {out_dir}\n")
+    sources = (profile or {}).get("sources", {})
 
-    if args.pyqs:
-        print("== Previous Year Question Papers (webservices.ignou.ac.in) ==")
-        s = fetch_pyqs(out_dir, args.codes, years, args.sessions, args.timeout, args.dry_run)
+    if profile and sources.get("pyq_archive"):
+        print("== Previous Year Question Papers (pyq_archive adapter) ==")
+        s = fetch_pyq_archive(sources["pyq_archive"], out_dir, args.timeout, args.dry_run)
         if not args.dry_run:
             print(f"PYQs: {len(s['downloaded'])} downloaded, {len(s['skipped'])} already had, "
-                  f"{len(s['missed'])} not on server, {len(s['failed'])} failed")
-            for item, err in s["failed"]:
-                print(f"  failed: {item} ({err})")
-            print()
+                  f"{len(s['missed'])} not on server, {len(s['failed'])} failed\n")
 
-    if args.slm:
-        print("== Study Material / SLM (egyankosh.ac.in) ==")
-        s = fetch_slm(out_dir, args.timeout, args.delay, args.max_files, args.dry_run)
+    if profile and sources.get("slm_repository"):
+        print("== Study Material (dspace-community adapter) ==")
+        s = fetch_dspace_community(sources["slm_repository"], out_dir, args.timeout,
+                                   args.delay, args.max_files, args.dry_run)
         print(f"SLM: {len(s['downloaded'])} downloaded, {len(s['skipped'])} already had, "
-              f"{len(s['failed'])} failed, {s['pages']} pages crawled")
-        for item, err in s["failed"][:20]:
-            print(f"  failed: {item} ({err})")
-        print()
+              f"{len(s['failed'])} failed, {s['pages']} pages crawled\n")
+
+    items = list(sources.get("url_list", []))
+    if args.url_file:
+        items += [line.strip() for line in Path(args.url_file).read_text().splitlines()
+                  if line.strip() and not line.startswith("#")]
+    if items:
+        print("== Extra URLs (url-list adapter) ==")
+        s = fetch_url_list(items, out_dir, args.timeout, args.dry_run)
+        if not args.dry_run:
+            print(f"URLs: {len(s['downloaded'])} downloaded, {len(s['skipped'])} already had, {len(s['failed'])} failed\n")
 
     if not args.dry_run:
         print("Done. Re-run any time: existing files are skipped, failures can be retried.")

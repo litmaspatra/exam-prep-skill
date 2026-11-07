@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 """
-MCQ Drill & Mock Exam Engine (OMR-style exams such as IGNOU CLIS TEE).
+MCQ Drill & Mock Exam Engine - works for any exam profile (MCQ, OMR, or
+self-graded flashcards for descriptive subjects).
 
 Modes:
-  Drill   : python scripts/mcq_quiz.py --course BLII-012 --count 15
+  Drill   : python scripts/mcq_quiz.py --profile my-exam --course CS-101 --count 15
             Immediate feedback + explanation after each question.
-  Mock    : python scripts/mcq_quiz.py --course BLII-012 --mock
+  Mock    : python scripts/mcq_quiz.py --profile my-exam --course CS-101 --mock
             Exam simulation (default 50 questions), no feedback until the end.
-  Mixed   : python scripts/mcq_quiz.py --all --count 20
+  Mixed   : python scripts/mcq_quiz.py --profile my-exam --all --count 20
   Report  : python scripts/mcq_quiz.py --report     (history from progress.json)
   Selftest: python scripts/mcq_quiz.py --selftest   (validate bank, no input)
 
-Every attempt is appended to progress.json (repo root) unless --no-save.
-The bank (data/clis_mcq_bank.json) is seeded with high-yield questions; grow
-it by adding questions extracted from the real PYQs you download with
-scripts/fetch_materials.py.
+The question bank comes from the exam profile ("mcq_bank" key). Question
+types: "mcq" (options + answer_index) and "flashcard" (model answer,
+self-graded) for descriptive subjects. Grow the bank with questions from
+the real PYQs you download with scripts/fetch_materials.py.
 """
 
 import argparse
@@ -29,9 +30,27 @@ if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_BANK = REPO_ROOT / "data" / "clis_mcq_bank.json"
+DEFAULT_BANK = REPO_ROOT / "data" / "sample-bank.json"
 PROGRESS_FILE = REPO_ROOT / "progress.json"
 LETTERS = "ABCD"
+
+
+def load_profile(arg, repo_root):
+    """Resolve --profile: a path, or an id/name inside profiles/."""
+    from pathlib import Path as P
+    cand = P(arg)
+    if cand.exists():
+        return json.loads(cand.read_text(encoding="utf-8"))
+    prof_dir = repo_root / "profiles"
+    for f in sorted(prof_dir.glob("*.json")):
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if arg.lower() in (d.get("id","").lower(), f.stem.lower(), d.get("name","").lower()):
+            d["_path"] = str(f)
+            return d
+    raise SystemExit(f"Profile '{arg}' not found in {prof_dir}")
 
 
 def load_bank(path):
@@ -43,17 +62,23 @@ def load_bank(path):
     errors = []
     seen = set()
     for i, q in enumerate(questions):
-        for field in ("id", "course", "question", "options", "answer_index"):
+        qtype = q.get("type", "mcq")
+        base = ("id", "course", "question")
+        needed = base + (("options", "answer_index") if qtype == "mcq" else ("answer",))
+        for field in needed:
             if field not in q:
                 errors.append(f"Q#{i}: missing '{field}'")
         qid = q.get("id")
         if qid in seen:
             errors.append(f"duplicate id: {qid}")
         seen.add(qid)
-        if not isinstance(q.get("options"), list) or len(q.get("options", [])) != 4:
-            errors.append(f"{qid}: needs exactly 4 options")
-        if not isinstance(q.get("answer_index"), int) or not 0 <= q.get("answer_index", -1) < 4:
-            errors.append(f"{qid}: answer_index must be 0-3")
+        if qtype == "mcq":
+            if not isinstance(q.get("options"), list) or len(q.get("options", [])) != 4:
+                errors.append(f"{qid}: needs exactly 4 options")
+            if not isinstance(q.get("answer_index"), int) or not 0 <= q.get("answer_index", -1) < 4:
+                errors.append(f"{qid}: answer_index must be 0-3")
+        elif qtype not in ("mcq", "flashcard"):
+            errors.append(f"{qid}: unknown type '{qtype}' (mcq or flashcard)")
     if not questions:
         errors.append("bank is empty")
     return questions, errors
@@ -114,8 +139,29 @@ def run_quiz(questions, course_label, mode, mock, no_save):
         order = list(range(4))
         random.shuffle(order)  # shuffle option positions each run
         print(f"Q{n}. [{q['course']}] {q['question']}")
-        for i, oi in enumerate(order):
-            print(f"   {LETTERS[i]}) {q['options'][oi]}")
+        if q.get("type", "mcq") == "flashcard":
+            pass
+        else:
+            for i, oi in enumerate(order):
+                print(f"   {LETTERS[i]}) {q['options'][oi]}")
+        if q.get("type", "mcq") == "flashcard":
+            try:
+                input("   (think of your answer, then press Enter)")
+            except EOFError:
+                break
+            print(f"   Model answer: {q['answer']}")
+            try:
+                ok = input("   Did you get it right? (y/n): ").strip().lower()
+            except EOFError:
+                break
+            picked = 1 if ok.startswith("y") else 0
+            is_right = bool(picked)
+            if q.get("explanation"):
+                print(f"   {q['explanation']}")
+            correct += is_right
+            results.append({"id": q["id"], "course": q["course"], "correct": is_right})
+            print()
+            continue
         picked = ask_choice()
         if picked is None:
             print("(ending early)")
@@ -166,7 +212,8 @@ def run_quiz(questions, course_label, mode, mock, no_save):
 
 def main():
     ap = argparse.ArgumentParser(description="MCQ drill & mock exam engine")
-    ap.add_argument("--bank", default=str(DEFAULT_BANK), help="Question bank JSON")
+    ap.add_argument("--profile", help="Exam profile: id/name in profiles/ or a path (sets bank + format)")
+    ap.add_argument("--bank", default=None, help="Question bank JSON (overrides profile)")
     ap.add_argument("--course", help="Course code to drill, e.g. BLII-012")
     ap.add_argument("--all", action="store_true", help="Mix questions from all courses")
     ap.add_argument("--count", type=int, default=None, help="Number of questions (default: 10 drill / 50 mock)")
@@ -181,7 +228,16 @@ def main():
         show_report()
         return
 
-    questions, errors = load_bank(args.bank)
+    bank_path = args.bank
+    if args.profile:
+        prof = load_profile(args.profile, REPO_ROOT)
+        if not bank_path and prof.get("mcq_bank"):
+            bank_path = str(REPO_ROOT / prof["mcq_bank"])
+        print(f"[profile: {prof.get('name', args.profile)} | format: {prof.get('format', '?')}]")
+    if not bank_path:
+        bank_path = str(DEFAULT_BANK)
+
+    questions, errors = load_bank(bank_path)
     if args.selftest:
         if errors:
             print("SELFTEST FAIL:")

@@ -1,7 +1,7 @@
 # Cline / Roo Code Rules: Exam Preparation & Curriculum Mastery
 
 When tasked with exam preparation, curriculum curation, or concept explanations:
-0. For IGNOU, run `python scripts/fetch_materials.py` first (official PYQs + eGyankosh study material, free).
+0. If the exam has a profile, run `python scripts/fetch_materials.py --profile <exam>` first (PYQs + study material via pluggable adapters).
 1. Identify the target exam, institution, exam date, daily study hours, and course syllabus.
 2. Determine time remaining (days left) and apply the Pareto 3-Tier framework:
    - Tier 1 (Core High-Yield): 60% of study time for top 20-30% chapters (yields 60-70% of marks).

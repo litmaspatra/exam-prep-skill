@@ -9,10 +9,10 @@ Foundations vs Tier 3 Skim).
 Two modes:
   * Single exam : --exam-date YYYY-MM-DD with a flat syllabus JSON
                   (a list of {"name", "weight", "difficulty"} chapters).
-  * Multi-exam  : a structured syllabus JSON with several courses, each with
-                  its own exam_date (see ignou_clis_syllabus.json). Produces
-                  one Pareto plan per course plus a day-by-day calendar that
-                  schedules study hours earliest-exam-first.
+  * Multi-exam  : any exam profile (profiles/<exam>.json) with several papers,
+                  each with its own exam_date. Produces one Pareto plan per
+                  paper plus a day-by-day calendar that schedules study hours
+                  earliest-exam-first.
 """
 
 import sys
@@ -183,7 +183,7 @@ def build_calendar(course_plans, daily_hours, today):
     return calendar, leftover
 
 
-def format_multi_plan(program, session, course_plans, calendar, leftover, daily_hours, today):
+def format_multi_plan(program, session, course_plans, calendar, leftover, daily_hours, today, fmt="mcq"):
     lines = []
     title = program or "Multi-Exam Preparation"
     if session:
@@ -228,8 +228,11 @@ def format_multi_plan(program, session, course_plans, calendar, leftover, daily_
         lines.append("> Increase --daily-hours or accept a lighter Tier 3.\n")
 
     lines.append("## Daily Time Allocation Recipe")
-    lines.append("- **50% New Intake:** read the SLM block / simplified breakdown for the scheduled unit.")
-    lines.append("- **35% PYQ & MCQ Practice:** run `python scripts/mcq_quiz.py --course <CODE> --count 15`.")
+    lines.append("- **50% New Intake:** read the study material / simplified breakdown for the scheduled unit.")
+    if fmt == "descriptive":
+        lines.append("- **35% PYQ Practice:** write out past-paper answers by hand, timed, no peeking.")
+    else:
+        lines.append("- **35% PYQ & MCQ Practice:** run `python scripts/mcq_quiz.py --profile <exam> --course <CODE> --count 15`.")
     lines.append("- **15% Active Recall:** rapid-fire self-quiz from the 1-page cheat sheet.")
     return "\n".join(lines)
 
@@ -240,8 +243,17 @@ def load_syllabus(arg):
     if arg is None:
         return None
     candidate = Path(arg)
-    if candidate.suffix == ".json" and candidate.exists():
+    if candidate.exists() and candidate.suffix == ".json":
         return json.loads(candidate.read_text(encoding="utf-8"))
+    # resolve a profile id/name from profiles/
+    prof_dir = Path(__file__).resolve().parent.parent / "profiles"
+    for f in sorted(prof_dir.glob("*.json")):
+        try:
+            d = json.loads(f.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        if arg.lower() in (d.get("id", "").lower(), f.stem.lower(), d.get("name", "").lower()):
+            return d
     return json.loads(arg)
 
 
@@ -250,17 +262,18 @@ def main():
     parser.add_argument("--exam-date", help="Single exam date YYYY-MM-DD (flat syllabus mode)")
     parser.add_argument("--current-date", default=None, help="Override 'today' (YYYY-MM-DD), for testing")
     parser.add_argument("--daily-hours", type=float, default=3.0, help="Available study hours per day")
-    parser.add_argument("--syllabus", help="Syllabus JSON file or string (flat list OR structured courses)")
+    parser.add_argument("--syllabus", "--profile", dest="syllabus",
+                        help="Exam profile / syllabus JSON file or string (flat chapter list OR profile with papers)")
     args = parser.parse_args()
 
     today = parse_date(args.current_date) if args.current_date else date.today()
     syllabus = load_syllabus(args.syllabus)
 
-    if isinstance(syllabus, dict) and "courses" in syllabus:
-        # Multi-exam mode
+    if isinstance(syllabus, dict) and ("papers" in syllabus or "courses" in syllabus):
+        # Multi-exam mode (profile file or structured syllabus)
         if args.exam_date:
-            print("[!] --exam-date is ignored in multi-course mode; dates come from each course.", file=sys.stderr)
-        courses = sorted(syllabus["courses"], key=lambda c: c["exam_date"])
+            print("[!] --exam-date is ignored in multi-paper mode; dates come from each paper.", file=sys.stderr)
+        courses = sorted(syllabus.get("papers") or syllabus["courses"], key=lambda c: c["exam_date"])
         # The study pool is one shared capacity (today -> last exam), split
         # across courses in proportion to their total unit weight.
         last_exam = max(parse_date(c["exam_date"]) for c in courses)
@@ -271,8 +284,10 @@ def main():
                  for c, w in zip(courses, weights)]
         calendar, leftover = build_calendar(plans, args.daily_hours, today)
         leftover = [(c, t) for c, t in leftover if t["hours"] > 0.5]
-        print(format_multi_plan(syllabus.get("program"), syllabus.get("exam_session"),
-                                plans, calendar, leftover, args.daily_hours, today))
+        label = syllabus.get("name") or syllabus.get("program")
+        print(format_multi_plan(label, syllabus.get("exam_session"),
+                                plans, calendar, leftover, args.daily_hours, today,
+                                syllabus.get("format", "mcq")))
         return
 
     # Single-exam flat mode

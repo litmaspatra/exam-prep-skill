@@ -13,9 +13,9 @@ An intelligent, multi-platform exam preparation and curriculum acceleration skil
 
 ## 🌟 Key Features
 
-0. **Deterministic Official Material Fetching (IGNOU):** `scripts/fetch_materials.py` downloads previous year question papers (webservices.ignou.ac.in) and full study material (eGyankosh) - official, free, no login, resumable.
+0. **Exam Profiles & Deterministic Material Fetching:** every exam is a small profile file (`profiles/<exam>.json`: papers, dates, format, marking, sources). `scripts/fetch_materials.py --profile <exam>` downloads the material through pluggable source adapters - IGNOU's official previous-question archive (any programme), any DSpace repository community (e.g. eGyankosh), or a plain list of PDF URLs - resumable, no login, free. Create a profile with `python scripts/new_profile.py`.
 1. **Automated PYQ & Blueprint Intelligence:**
-   - Researches previous year question papers (PYQs), marking schemes, and recurring question archetypes for specific universities (IGNOU, DU, Anna Univ, etc.) or standardized exams (GATE, GRE).
+   - Researches previous year question papers (PYQs), marking schemes, and recurring question archetypes for any university or standardized exam (GATE, GRE, boards, university papers).
    - Identifies whether the exam is descriptive or objective (e.g. OMR/MCQs) to tailor your study strategy.
 2. **Time-Aware Curriculum Curation (Pareto 80/20 Triage):**
    - **Tier 1: Core High-Yield (60%–70% Marks):** Deep mastery of the top 20–30% topics that recur every year.
@@ -25,7 +25,7 @@ An intelligent, multi-platform exam preparation and curriculum acceleration skil
    - **Mathematics & Quantitative:** Physical intuition $\to$ Minimal formula $\to$ 3-step benchmark problem $\to$ Exam trap alert.
    - **Classification Systems & Taxonomies (e.g., Dewey Decimal Classification - DDC):** Must-memorize code bank, 10-class story mnemonic, 3-step decision algorithms, and practice drills.
 4. **MCQ Drill & Mock Exam Engine:** `scripts/mcq_quiz.py` runs option-shuffled drills and 50-question OMR mock simulations per course, with explanations and a persistent `progress.json` score history.
-5. **Multi-Exam Planning:** the planner handles several courses with staggered exam dates (e.g. IGNOU CLIS Dec 2026: BLI-011/BLII-012/013/014), splits the shared study pool across courses, and emits a day-by-day calendar.
+5. **Multi-Paper Planning:** the planner handles any number of papers with staggered exam dates, splits the shared study pool across papers, and emits a day-by-day calendar.
 6. **Actionable Revision Artifacts:**
    - Rapid-fire active recall drills.
    - 1-Page Master Cheat Sheets for the final 24-hour review.
@@ -114,15 +114,17 @@ exam-prep-skill/
 │   └── codex_instructions.md        # Custom instruction prompt
 ├── scripts/
 │   ├── exam_planner.py              # CLI planner (single-exam + multi-exam calendar)
-│   ├── fetch_materials.py           # Official IGNOU PYQ + SLM downloader
-│   ├── mcq_quiz.py                  # MCQ drill & mock exam engine (progress.json)
+│   ├── fetch_materials.py           # Profile-driven PYQ + study-material downloader
+│   ├── mcq_quiz.py                  # MCQ/flashcard drill & mock exam engine (progress.json)
+│   ├── new_profile.py               # Guided creator for a new exam profile
 │   └── install.py                   # Multi-platform universal installer
 ├── data/
-│   └── clis_mcq_bank.json           # Seed MCQ bank (grow it from fetched PYQs)
+│   └── sample-bank.json             # Seed bank for the sample profile (grow yours from fetched PYQs)
+├── profiles/
+│   └── sample-exam.json               # Template exam profile (papers, dates, format, sources)
 ├── examples/
 │   ├── dewey-decimal-classification-mastery.md  # Concrete DDC teaching case study
 │   ├── curated-1-month-plan-sample.md           # Concrete 30-day Pareto sprint plan
-│   └── ignou-clis-exam-blueprint.md             # Real IGNOU CLIS exam intelligence
 ├── LICENSE                          # MIT License
 └── README.md
 ```
@@ -135,20 +137,23 @@ Generate an instant time-budgeted study breakdown directly from your terminal:
 
 ```bash
 # Single exam: 34 days remaining, 3 hours/day
-python scripts/exam_planner.py --exam-date 2026-12-11 --daily-hours 3.0
+python scripts/exam_planner.py --exam-date 2027-01-10 --daily-hours 3.0
 
-# Multi-exam structured syllabus (IGNOU CLIS Dec 2026, 4 papers):
-python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
+# Any exam profile (any number of papers, each with its own date):
+python scripts/exam_planner.py --profile sample-exam --daily-hours 3.0
 ```
 
-### IGNOU CLIS Quickstart
+### Quickstart (any exam)
 ```bash
-python scripts/fetch_materials.py                          # official PYQs + study material -> materials/
-python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0   # full Dec 2026 plan
-python scripts/mcq_quiz.py --course BLII-012 --count 15    # drill one paper
-python scripts/mcq_quiz.py --course BLI-011 --mock         # 50-question mock
-python scripts/mcq_quiz.py --report                        # your score history
+python scripts/new_profile.py                                # 1. describe your exam once
+python scripts/fetch_materials.py --profile my-exam          # 2. get PYQs + study material
+python scripts/exam_planner.py --profile my-exam --daily-hours 3   # 3. your study plan + calendar
+python scripts/mcq_quiz.py --profile my-exam --course CS-101 --count 15   # 4. daily drill
+python scripts/mcq_quiz.py --profile my-exam --course CS-101 --mock       # 5. mock exam
+python scripts/mcq_quiz.py --report                                     # 6. score history
 ```
+
+Try it first with the bundled template profile: `--profile sample-exam`.
 
 ---
 

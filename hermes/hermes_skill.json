@@ -6,7 +6,7 @@
     "properties": {
       "exam_name": {
         "type": "string",
-        "description": "Name of the exam (e.g., IGNOU CLIS, GATE, Semester Final)"
+        "description": "Name of the exam (e.g., GATE, Semester Final, BCom 1st Year)"
       },
       "subject": {
         "type": "string",

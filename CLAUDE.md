@@ -23,21 +23,22 @@ When the user asks for exam preparation, test review, syllabus planning, past pa
 ---
 
 ## 🛠️ Execution Commands
-Fetch official free study material & PYQs first (IGNOU):
+Fetch study material & PYQs first, using the exam's profile (sources are pluggable: PYQ archives, DSpace repositories, URL lists):
 ```bash
-python scripts/fetch_materials.py            # PYQs + eGyankosh SLM into materials/
+python scripts/fetch_materials.py --profile <exam>     # into materials/<exam>/
+python scripts/new_profile.py                          # create a profile for a new exam
 ```
 
 Run the study planner (single exam or multi-exam structured syllabus):
 ```bash
 python scripts/exam_planner.py --exam-date <YYYY-MM-DD> --daily-hours <HOURS>
-python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours <HOURS>
+python scripts/exam_planner.py --profile <exam> --daily-hours <HOURS>   # any N papers + dates
 ```
 
 MCQ drills & mock exams (progress saved to progress.json):
 ```bash
-python scripts/mcq_quiz.py --course <CODE> --count 15
-python scripts/mcq_quiz.py --course <CODE> --mock
+python scripts/mcq_quiz.py --profile <exam> --course <CODE> --count 15
+python scripts/mcq_quiz.py --profile <exam> --course <CODE> --mock
 python scripts/mcq_quiz.py --report
 ```
 

@@ -6,7 +6,7 @@ Prepares students for university, board, or licensing examinations through PYQ i
 `/exam-prep [Exam Name] [Course] [University] [Exam Date]`
 
 ## Workflow
-0. For IGNOU, fetch official material first: `python scripts/fetch_materials.py` (PYQs + study material). Grow `data/clis_mcq_bank.json` from the fetched PYQs.
+0. If the exam has a profile, fetch its material first: `python scripts/fetch_materials.py --profile <exam>` (PYQs + study material). Grow the profile's question bank from the fetched PYQs. New exam? `python scripts/new_profile.py`.
 1. Calculate days remaining until the exam.
 2. Mine the downloaded PYQs (or search the web as fallback) for weightages.
 3. Categorize syllabus into:

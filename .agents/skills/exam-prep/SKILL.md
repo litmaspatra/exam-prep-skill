@@ -33,16 +33,15 @@ flowchart TD
 
 Before searching the web, download the official free material with the bundled fetcher:
 
-```bash
-# Everything (PYQs + study material), into materials/ (gitignored)
-python scripts/fetch_materials.py
+Each exam is described by a profile (`profiles/<exam>.json`: papers, dates, format, marking, sources). Create one with `python scripts/new_profile.py`; a template ships as `profiles/sample-exam.json`.
 
-# Or selectively:
-python scripts/fetch_materials.py --pyqs    # official PYQ PDFs (webservices.ignou.ac.in)
-python scripts/fetch_materials.py --slm     # study material PDFs (egyankosh.ac.in)
+```bash
+python scripts/fetch_materials.py --profile <exam>            # everything the profile defines
+python scripts/fetch_materials.py --profile <exam> --dry-run  # preview without downloading
+python scripts/fetch_materials.py --url-file urls.txt         # one-off list of PDF URLs
 ```
 
-Both sources are official IGNOU and free - no login, no card. Safe to re-run: existing files are skipped and failures are listed for retry. Mine the downloaded PYQs to refine syllabus weights and to grow the MCQ bank (`data/clis_mcq_bank.json`). Use web search (Step 2) only for institutions the fetcher does not cover or to fill gaps.
+Pluggable source adapters: `ignou-pyq-archive` (IGNOU's official PYQ archive, any programme via "archive_path"), `dspace-community` (any DSpace repository community, e.g. an eGyankosh community), and `url-list` (plain PDF URLs). Safe to re-run: existing files are skipped and failures are listed for retry. Mine the downloaded PYQs to refine paper weights and to grow the profile's MCQ bank. Use web search (Step 2) only for sources the adapters do not cover or to fill gaps.
 
 ---
 
@@ -92,11 +91,11 @@ Execute the curriculum triage logic (or invoke `scripts/exam_planner.py`):
 # Single exam, flat syllabus:
 python scripts/exam_planner.py --exam-date <YYYY-MM-DD> --daily-hours <HOURS>
 
-# Multiple exams (one course per exam date) - e.g. IGNOU CLIS Dec 2026:
-python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
+# Any exam profile (any number of papers, each with its own date):
+python scripts/exam_planner.py --profile <exam> --daily-hours 3.0
 ```
 
-Multi-exam mode plans each course against its own exam date, splits the shared study pool across courses, and prints a day-by-day calendar (earliest exam scheduled first, exam days kept free). Units in the syllabus JSON may carry `"tier_hint": 1|2|3` to pin a known high-yield unit into a tier.
+Multi-exam mode plans each course against its own exam date, splits the shared study pool across courses, and prints a day-by-day calendar (earliest exam scheduled first, exam days kept free). Units in the profile may carry `"tier_hint": 1|2|3` to pin a known high-yield unit into a tier.
 
 Refer to [curriculum-triage.md](./references/curriculum-triage.md) for the mathematical allocation rules.
 
@@ -157,12 +156,12 @@ Follow the detailed teaching guides in [pedagogy-guides.md](./references/pedagog
 ## Step 5: Active Recall, Cheat Sheets & Exam Simulation
 
 Reinforce learning with high-impact revision artifacts:
-1. **MCQ Drills & Mock Exams (OMR/MCQ papers like IGNOU CLIS):** use the quiz engine, which shuffles options, scores attempts, and logs progress to `progress.json`:
+1. **MCQ Drills & Mock Exams:** use the quiz engine (works for MCQ/OMR papers and flashcard self-grading for descriptive ones), which shuffles options, scores attempts, and logs progress to `progress.json`:
 
    ```bash
-   python scripts/mcq_quiz.py --course BLII-012 --count 15   # drill with feedback
-   python scripts/mcq_quiz.py --course BLII-012 --mock       # 50-question exam simulation
-   python scripts/mcq_quiz.py --report                       # progress so far
+   python scripts/mcq_quiz.py --profile <exam> --course <CODE> --count 15   # drill with feedback
+   python scripts/mcq_quiz.py --profile <exam> --course <CODE> --mock       # exam simulation
+   python scripts/mcq_quiz.py --report                                     # progress so far
    ```
 
 2. **End-of-Session Micro-Drills:** 3 to 5 rapid active-recall questions to test retention immediately.

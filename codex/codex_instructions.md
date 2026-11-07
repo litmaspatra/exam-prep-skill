@@ -31,7 +31,8 @@ Whenever a student or user provides exam details:
 If the exam-prep-skill repository is available (cloned locally), prefer its deterministic tools over ad-hoc searching:
 
 ```bash
-python scripts/fetch_materials.py      # official IGNOU PYQs + study material
-python scripts/exam_planner.py --syllabus ignou_clis_syllabus.json --daily-hours 3.0
-python scripts/mcq_quiz.py --course BLII-012 --count 15   # or --mock / --report
+python scripts/new_profile.py                            # describe the exam once
+python scripts/fetch_materials.py --profile my-exam        # PYQs + study material
+python scripts/exam_planner.py --profile my-exam --daily-hours 3.0
+python scripts/mcq_quiz.py --profile my-exam --course CS-101 --count 15   # or --mock / --report
 ```
